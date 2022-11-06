@@ -1,0 +1,28 @@
+{
+  "name": "vaccine-slotbooking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error:no test specified\" && exit 1",
+    "start":"npx nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pareshnaik96/vaccine-slotbooking.git"
+  },
+  "author": "Paresh Naik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pareshnaik96/vaccine-slotbooking/issues"
+  },
+  "homepage": "https://github.com/pareshnaik96/vaccine-slotbooking#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.7.1",
+    "nodemon": "^2.0.20"
+  }
+}
