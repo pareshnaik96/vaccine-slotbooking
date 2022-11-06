@@ -28,7 +28,9 @@ In each vaccine slot there will be 10 vaccine doses available (vaccine dose is s
 Once 10 vaccine doses in a slot is registered, that time slot shouldn’t be available for further registrations (unless the registered user modifies his time slot to a different slot)
 
 ### Models
+
 - User Model
+```yaml
 { 
   name: {string, mandatory},
   phoneNumber: {string, mandatory, unique},
@@ -39,8 +41,10 @@ Once 10 vaccine doses in a slot is registered, that time slot shouldn’t be ava
   createdAt: {timestamp},
   updatedAt: {timestamp}
 }
+```
 
 - Slot Model
+```yaml
 { 
   slotDate: {string, mandatory},
   slotTime: {string, mandatory}, 
@@ -50,9 +54,11 @@ Once 10 vaccine doses in a slot is registered, that time slot shouldn’t be ava
   createdAt: {timestamp},
   updatedAt: {timestamp},
 }
+```
 
-- Booking Model 
-{
+- Booking Model
+```yaml
+{ 
   userId: {ObjectId, mandatory, refs to user model},
   doseType: {string, mandatory, enum:["First","Second"]},
   slotDate: {string, mandatory},
@@ -60,7 +66,7 @@ Once 10 vaccine doses in a slot is registered, that time slot shouldn’t be ava
   status: {string, enum:["pending", "completed", "cancelled"],default: "pending"}
   cancellable: {boolean, default: true},
 }
-
+```
 
 ## User APIs 
 ### POST /register
