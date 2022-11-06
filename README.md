@@ -79,7 +79,7 @@ Vaccine slot details
 - On a successful login attempt return a JWT token contatining the userId, exp, iat. The response should be a JSON object.
 - If the credentials are incorrect return a suitable error message with a valid HTTP status code. The response should be a JSON object.
 
-## Slot API
+## Slot APIs
 ### POST /slot/:adminId
 - Create slot from request body. Get adminId in path param.
 - Make sure the adminId is a valid adminId by checking the admin exist in the users collection.
