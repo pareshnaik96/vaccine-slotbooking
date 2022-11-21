@@ -56,13 +56,12 @@ const getSlot = async function (req: Request, res: Response) {
 
         let filter = { availableSlot: { $gt: 0 } }
 
-        if (isValid(date)) {
-            filter["date"] = date
-        }
-
-        if (isValid(time)) {
-            filter["time"] = time
-        }
+        // if (isValid(date as string)) {
+        //     filter("date") = date
+        // }
+        // if (isValid(time as string)) {
+        //     filter("time") = time
+        // }
 
         let avaliableSlot = await slotModel.find(filter).select({ _id: 0, date: 1, time: 1, totalSlot: 1, bookedSlot: 1, availableSlot: 1 })
 
