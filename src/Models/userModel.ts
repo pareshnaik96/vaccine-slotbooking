@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
-     {
-        name:{
-           type:String,
-           required:[true, "name is required"],
-           trim:true
+    {
+        name: {
+            type: String,
+            required: [true, "name is required"],
+            trim: true
         },
         phoneNumber: {
             type: String,
@@ -13,8 +13,8 @@ const userSchema = new mongoose.Schema(
             unique: true,
             trim: true
         },
-        age:{
-            type:Number,
+        age: {
+            type: Number,
             required: [true, "age is required"],
             trim: true
         },
@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
             required: [true, "pincode is required"],
             trim: true
         },
-        aadharNo:{
+        aadharNo: {
             type: String,
             required: [true, "aadhar No. is required"],
             trim: true
@@ -36,8 +36,8 @@ const userSchema = new mongoose.Schema(
             trim: true
         }
 
-    },{ timestamps: true }
+    }, { timestamps: true }
 
- );
+);
 
- module.exports = mongoose.model('User', userSchema);
+export default mongoose.model('User', userSchema);

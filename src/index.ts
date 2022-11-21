@@ -1,16 +1,14 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+import express from 'express';
+// import bodyParser from'body-parser';
 import mongoose from 'mongoose';
-const route = require('./Routes/route.js');
+import route from './Routes/route.js';
 
 
 const app = express();
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 
-mongoose.connect("mongodb+srv://pareshnaik:W536yetBeRCk0yL8@cluster0.m9yz9.mongodb.net/vaccine-DB?retryWrites=true&w=majority", {
-    // useNewUrlParser: true
-})
+mongoose.connect("mongodb+srv://pareshnaik:W536yetBeRCk0yL8@cluster0.m9yz9.mongodb.net/vaccine-DB?retryWrites=true&w=majority")
     .then(() => console.log("MongoDb is connected"))
     .catch(err => console.log(err))
 

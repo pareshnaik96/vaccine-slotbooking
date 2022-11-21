@@ -1,53 +1,45 @@
-const slotModel = require("../Models/slotModel");
-const userModel = require("../Models/userModel");
-import{Request,Response} from 'express'
+import slotModel from "../Models/slotModel";
+import userModel from "../Models/userModel";
+import { Request, Response } from 'express';
 
-const isValid = function (value:string | number) {
+const isValid = function (value: string | number) {
     if (typeof value == "undefined" || value == null) return false;
     if (typeof value == "string" && value.trim().length == 0) return false;
     return true;
-  };
+};
 
 
 //================================================== slot booking controller ====================================================//
 
 
-const createSlot = async function(req:Request,res:Response){
+const createSlot = async function (req: Request, res: Response) {
 
-    try{
-       
-       let data = req.body
-       
-       let userId = req.params.adminId
+    try {
 
+        let data = req.body
 
-       const { slotDate,slotTime,totalSlot } = data;
+        const { date, time, totalSlot } = data;
 
 
-       if (!isValid(slotDate)) {
-        return res.status(400).send({ status: false, message: "slotDate is required" });
-       }
-       if (!isValid(slotTime)) {
-        return res.status(400).send({ status: false, message: "slotTime is required" });
-       }
-       if (!isValid(totalSlot)) {
-        return res.status(400).send({ status: false, message: "totalSlot is required" });
-       }
+        if (!isValid(date)) {
+            return res.status(400).send({ status: false, message: "slotDate is required" });
+        }
+        if (!isValid(time)) {
+            return res.status(400).send({ status: false, message: "slotTime is required" });
+        }
+        if (!isValid(totalSlot)) {
+            return res.status(400).send({ status: false, message: "totalSlot is required" });
+        }
 
-       let findAdmin = await userModel.findOne({_id:userId})
-       const name = "Admin"
-       const adminName = findAdmin.name
-       if(adminName !== name){
-          return res.status(404).send({ status: true, message: "Admin Not found. you are unauthorized"});
-       }
+        let findAdmin = await userModel.findOne({ name: "Admin" })
+        if (!findAdmin) {
+            return res.status(404).send({ status: true, message: "Admin Not found. you are unauthorized" });
+        }
 
-       const AdminId = findAdmin._id
-       if (AdminId != userId) return res.status(401).send({ status: false, message: "userId of admin not matched with Admin,unauthorized" })
+        let createSlot = await slotModel.create(data)
+        return res.status(201).send({ status: true, message: "Slot created successfully", data: createSlot });
 
-       let createSlot = await slotModel.create(data)
-          return res.status(201).send({ status: true, message: "Slot created successfully", data:createSlot });
-
-    }catch(error:any){
+    } catch (error: any) {
         return res.status(500).send({ status: false, message: error.message });
     }
 }
@@ -55,38 +47,35 @@ const createSlot = async function(req:Request,res:Response){
 //===================================================== get slot controller =====================================================//
 
 
-const getSlot = async function (req:Request, res:Response) {
+const getSlot = async function (req: Request, res: Response) {
 
     try {
 
         let data = req.query
-        let { slotDate,  slotTime } = data
+        let { date, time } = data
 
+        let filter = { availableSlot: { $gt: 0 } }
 
-        let filter = {availableSlot:{$gt:0}}
-
-
-        if (isValid(slotDate)) {
-            filter["slotDate"] = slotDate
+        if (isValid(date)) {
+            filter["date"] = date
         }
 
-        if (isValid(slotTime)) {
-            filter["slotTime"] = slotTime
+        if (isValid(time)) {
+            filter["time"] = time
         }
 
-        let avaliableSlot = await slotModel.find(filter).select({_id:0, slotDate:1,slotTime:1,totalSlot:1,bookedSlot:1,availableSlot:1 })
+        let avaliableSlot = await slotModel.find(filter).select({ _id: 0, date: 1, time: 1, totalSlot: 1, bookedSlot: 1, availableSlot: 1 })
 
         if (avaliableSlot && avaliableSlot.length === 0)
             return res.status(404).send({ status: false, message: "No slot avaliable" })
 
         return res.status(200).send({ status: true, message: "slot list accessed successfully", data: avaliableSlot })
 
-    } catch (error:any) {
+    } catch (error: any) {
         return res.status(500).send({ status: false, message: error.message })
 
     }
 }
 
 
-module.exports.createSlot = createSlot;
-module.exports.getSlot = getSlot;
+export { createSlot, getSlot };

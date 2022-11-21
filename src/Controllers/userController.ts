@@ -1,31 +1,31 @@
-const userModel = require("../Models/userModel");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-import{Request,Response} from 'express'
+import userModel from "../Models/userModel";
+import * as bcrypt from "bcrypt";
+import * as jwt from 'jsonwebtoken';
+import { Request, Response } from 'express'
 
 
 //======================================= validation ====================================//
 
-const isValid = function (value:string | number) {
+const isValid = function (value: string | number) {
     if (typeof value == "undefined" || value == null) return false;
     if (typeof value == "string" && value.trim().length == 0) return false;
     return true;
 };
 
-const isvalidRequestBody = function (requestbody:string | number) {
+const isvalidRequestBody = function (requestbody: string | number) {
     return Object.keys(requestbody).length > 0;
 }
 
-const isValid1 = function (phone:number) {                                                              
+const isValid1 = function (phone: number) {
     let phoneRegex = /^[789]\d{9}$/;
-    return phoneRegex.test(phone)
+    return phoneRegex.test(String(phone))
 };
 
 
 //============================================== create user controller ===================================================//
 
 
-const createUser = async function (req:Request, res:Response) {
+const createUser = async function (req: Request, res: Response) {
 
     try {
 
@@ -36,8 +36,9 @@ const createUser = async function (req:Request, res:Response) {
             return res.status(400).send({ status: false, message: "please enter required fields" });
         }
 
-        const { name, phoneNumber, age, pincode, aadharNo, password } = data;
-        
+        const { name, phoneNumber, age, pincode, aadharNo } = data;
+        let password = data.password
+
         //--------------------------------- validation ---------------------------------------------//
 
         if (!isValid(name)) {
@@ -53,7 +54,7 @@ const createUser = async function (req:Request, res:Response) {
         }
 
         let uniquePhone = await userModel.findOne({ phoneNumber })
-        if (uniquePhone){
+        if (uniquePhone) {
             return res.status(400).send({ status: false, message: "phoneNumber already exist" });
         }
 
@@ -85,10 +86,10 @@ const createUser = async function (req:Request, res:Response) {
             return res.status(400).send({ status: false, message: "aadharNo. is not valid" });
         }
 
-        if (!isValid( password)) {
+        if (!isValid(password)) {
             return res.status(400).send({ status: false, message: " password is required" });
         }
-        
+
         if (password.length < 8 || password.length > 15) {
             return res.status(400).send({ status: false, message: "password must be 8-15 characters" });
         }
@@ -111,7 +112,7 @@ const createUser = async function (req:Request, res:Response) {
         let createUser = await userModel.create(saveData)
         return res.status(201).send({ status: true, message: "User created successfully", data: createUser });
 
-    } catch (error:any) {
+    } catch (error: any) {
         return res.status(500).send({ status: false, message: error.message });
     }
 }
@@ -120,7 +121,7 @@ const createUser = async function (req:Request, res:Response) {
 //============================================ Login user controller ============================================================//
 
 
-const login = async function (req:Request, res:Response) {
+const login = async function (req: Request, res: Response) {
 
     try {
 
@@ -162,12 +163,11 @@ const login = async function (req:Request, res:Response) {
         return res.status(200).send({ status: true, message: "user login sucessfull", data: token })
 
     }
-    catch (error:any) {
+    catch (error: any) {
         return res.status(500).send({ status: false, message: "Error", error: error.message })
     }
 }
 
 
 
-module.exports.createUser = createUser
-module.exports.login = login
+export { createUser, login };

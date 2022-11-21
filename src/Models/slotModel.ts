@@ -1,13 +1,13 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 const slotSchema = new mongoose.Schema(
-     {
-        slotDate:{
-            type:String,
+    {
+        date: {
+            type: String,
             required: [true, "Date is required"],
-            trim:true,
+            trim: true,
         },
-        slotTime: {
+        time: {
             type: String,
             required: [true, "Slot time is required"],
             trim: true
@@ -19,17 +19,26 @@ const slotSchema = new mongoose.Schema(
         },
         bookedSlot: {
             type: Number,
-            default:0,
+            default: 0,
             trim: true
         },
         availableSlot: {
             type: Number,
-            default:10,
+            default: 10,
             trim: true
         }
 
-    },{ timestamps: true }
+    }, { timestamps: true }
 
- );
+);
 
- module.exports = mongoose.model('Slot', slotSchema);
+export interface ISlot {
+    _id?: Types.ObjectId;
+    date: string;
+    time: string;
+    totalSlot: number;
+    bookedSlot: number;
+    availableSlot: number;
+}
+
+export default mongoose.model<ISlot>('Slot', slotSchema);
