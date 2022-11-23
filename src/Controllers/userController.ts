@@ -13,7 +13,7 @@ const isValid = function (value: string | number) {
 };
 
 const isvalidRequestBody = function (requestbody: string | number) {
-    return Object.keys(requestbody).length > 0;
+    return Object.entries(requestbody).length > 0;
 }
 
 const isValid1 = function (phone: number) {
@@ -30,7 +30,6 @@ const createUser = async function (req: Request, res: Response) {
     try {
 
         let data = req.body
-
 
         if (!isvalidRequestBody(data)) {
             return res.status(400).send({ status: false, message: "please enter required fields" });

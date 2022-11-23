@@ -1,10 +1,10 @@
 import * as jwt from "jsonwebtoken";
-import mongoose from 'mongoose';
+import { Types } from 'mongoose';
 import { Request, Response, NextFunction } from 'express'
-
+import userModel from "../Models/userModel";
 
 const isValidObjectId = function (ObjectId: any) {
-    return mongoose.Types.ObjectId.isValid(ObjectId)
+    return Types.ObjectId.isValid(ObjectId)
 }
 
 
@@ -47,5 +47,25 @@ const authorization = async function (req: Request, res: Response, next: NextFun
         return res.status(500).send({ status: false, error: error.message })
     }
 }
+const adminAuthorization = async function (req: Request, res: Response, next: NextFunction) {
 
-export { authentication, authorization }
+    try {
+
+        let AdminId = req.params.adminId
+
+        if (!isValidObjectId(AdminId)) return res.status(400).send({ status: false, message: "invalid Id" })
+
+        let user = await userModel.findById({ _id: AdminId })
+        let admin = await userModel.findOne({ name: "Admin" })
+
+        if (user && admin && user._id.equals(admin._id))
+            next()
+        else return res.status(403).send({ status: false, message: "unauthorized.You are not authorize to perform the action." })
+
+    }
+    catch (error: any) {
+        return res.status(500).send({ status: false, error: error.message })
+    }
+}
+
+export { authentication, authorization, adminAuthorization }

@@ -55,6 +55,7 @@ const bookSlot = async function (req: Request, res: Response) {
 
         let findBooking = await bookingModel.findOne({ userId: userId });
 
+        //if user put dose type Second in request body but not found in booking model Or not complected
         if (doseType == "Second") {
             if (!findBooking)
                 return res.status(200).send({ status: false, message: "Your First dose is not complected" });

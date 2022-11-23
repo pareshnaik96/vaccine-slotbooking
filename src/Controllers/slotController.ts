@@ -31,10 +31,6 @@ const createSlot = async function (req: Request, res: Response) {
             return res.status(400).send({ status: false, message: "totalSlot is required" });
         }
 
-        let findAdmin = await userModel.findOne({ name: "Admin" })
-        if (!findAdmin) {
-            return res.status(404).send({ status: true, message: "Admin Not found. you are unauthorized" });
-        }
 
         let createSlot = await slotModel.create(data)
         return res.status(201).send({ status: true, message: "Slot created successfully", data: createSlot });
@@ -56,12 +52,12 @@ const getSlot = async function (req: Request, res: Response) {
 
         let filter = { availableSlot: { $gt: 0 } }
 
-        // if (isValid(date as string)) {
-        //     filter("date") = date
-        // }
-        // if (isValid(time as string)) {
-        //     filter("time") = time
-        // }
+        if (isValid(date as string)) {
+            filter["date"] = date
+        }
+        if (isValid(time as string)) {
+            filter["time"] = time
+        }
 
         let avaliableSlot = await slotModel.find(filter).select({ _id: 0, date: 1, time: 1, totalSlot: 1, bookedSlot: 1, availableSlot: 1 })
 

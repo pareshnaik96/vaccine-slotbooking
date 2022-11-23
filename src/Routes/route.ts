@@ -5,15 +5,14 @@ import { createUser, login } from "../Controllers/userController";
 import { createSlot, getSlot } from "../Controllers/slotController";
 import { bookSlot, updateBooking } from "../Controllers/bookingController";
 
-import { authentication, authorization } from "../Middlewares/auth";
-
+import { authentication, authorization, adminAuthorization } from "../Middlewares/auth";
 
 
 router.post('/register', createUser)
 
 router.post('/login', login)
 
-router.post('/slot/:adminId', createSlot)       //only admin can create slot
+router.post('/slot/:adminId', adminAuthorization, createSlot)       //only admin can create slot
 
 router.get('/slot', authentication, getSlot)     //Login user can see the slot
 

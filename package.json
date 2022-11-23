@@ -7,7 +7,8 @@
     "test": "echo \"Error:no test specified\" && exit 1",
     "start": "npx nodemon dist/index.js",
     "build": "tsc -p tsconfig.json",
-    "dev": "ts-node-dev src/index.ts"
+    "dev": "ts-node-dev src/index.ts",
+    "serve": "rm -rf ./dist && npm run build && npm run start"
   },
   "repository": {
     "type": "git",
