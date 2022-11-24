@@ -1,5 +1,4 @@
 import slotModel from "../Models/slotModel";
-import userModel from "../Models/userModel";
 import { Request, Response } from 'express';
 
 const isValid = function (value: string | number) {
@@ -18,7 +17,7 @@ const createSlot = async function (req: Request, res: Response) {
 
         let data = req.body
 
-        const { date, time, totalSlot } = data;
+        let { date, time, totalSlot } = data;
 
 
         if (!isValid(date)) {
@@ -31,6 +30,11 @@ const createSlot = async function (req: Request, res: Response) {
             return res.status(400).send({ status: false, message: "totalSlot is required" });
         }
 
+        // const dt = new Date(date)
+        // const newdt = dt.getTime()
+
+        // const newDate = new Date(newdt).toLocaleDateString()
+        // const newTime = new Date(newdt).toLocaleString().split(', ')[1]
 
         let createSlot = await slotModel.create(data)
         return res.status(201).send({ status: true, message: "Slot created successfully", data: createSlot });

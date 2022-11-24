@@ -94,13 +94,18 @@ const bookSlot = async function (req: Request, res: Response) {
             }
         }
 
+        // const dt = new Date(date)
+        // const newdt = dt.getTime()
+
+        // const newDate = new Date(newdt).toLocaleDateString()
+        // const newTime = new Date(newdt).toLocaleString().split(', ')[1]
+
         //for new booking and update the slot
         const saveData = {
             userId: userId,
             doseType: doseType,
             slotDate: date,
             slotTime: time
-
         }
         const slotId = findSlot._id
         const newbookedSlot = findSlot.bookedSlot
