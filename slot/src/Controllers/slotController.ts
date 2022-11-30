@@ -1,5 +1,6 @@
-import slotModel from "../Models/slotModel";
+// import { slotModel } from "../../../service"
 import { Request, Response } from 'express';
+import slotModel from "../Models/slotModel";
 
 const isValid = function (value: string | number) {
     if (typeof value == "undefined" || value == null) return false;

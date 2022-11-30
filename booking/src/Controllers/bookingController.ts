@@ -1,8 +1,7 @@
-import bookingModel from "../Models/bookingModel";
-import slotModel, { ISlot } from "../../../slot/src/Models/slotModel";
-import userModel from "../../../user/src/Models/userModel";
+import * as service from "../../../service"
 import mongoose from "mongoose";
 import { Request, Response } from 'express'
+
 
 //===== validation for object id
 const isValidObjectId = function (ObjectId: any) {
@@ -25,7 +24,7 @@ const bookSlot = async function (req: Request, res: Response) {
 
         let userId = req.params.userId
 
-        const user = await userModel.findOne({ _id: userId })
+        const user = await service.userModel.findOne({ _id: userId })
         if (!user) {
             return res.status(404).send({ status: false, message: "User Not found" })
         }
@@ -47,13 +46,16 @@ const bookSlot = async function (req: Request, res: Response) {
         }
 
         //for finding availability of slot from slotmodel
-        let findSlot = await slotModel.findOne({ date: date, time: time }) as ISlot
-        let availableSlot = findSlot.availableSlot
-        if (availableSlot === 0) {
-            return res.status(404).send({ status: false, message: "NO slot available in this time" })
+        let findSlot = await service.slotModel.findOne({ date: date, time: time })
+        if (findSlot) {
+            let availableSlot = findSlot.availableSlot
+            if (availableSlot === 0) {
+                return res.status(404).send({ status: false, message: "NO slot available in this time" })
+            }
         }
 
-        let findBooking = await bookingModel.findOne({ userId: userId });
+
+        let findBooking = await service.bookingModel.findOne({ userId: userId });
 
         //if user put dose type Second in request body but not found in booking model Or not complected
         if (doseType == "Second") {
@@ -69,26 +71,33 @@ const bookSlot = async function (req: Request, res: Response) {
             //if first dose cancelled then booking for another slot
             if (getDoseType == "First" && getStatus == "cancelled") {
 
-                let updatedSlot = await bookingModel.findOneAndUpdate({ _id: findbookingId, userId }, { $set: { status: "pending" } }, { new: true });
+                let updatedSlot = await service.bookingModel.findOneAndUpdate({ _id: findbookingId, userId }, { $set: { status: "pending" } }, { new: true });
 
-                const slotId = findSlot._id
-                const newbookedSlot = findSlot.bookedSlot
-                //finding the slot from slot Id and increasing the bookedSlot to +1 and decrease the available slot to -1
-                await slotModel.findOneAndUpdate({ _id: slotId }, { $set: { bookedSlot: newbookedSlot + 1, availableSlot: availableSlot - 1 } })
-                return res.status(200).send({ status: true, message: "slot booking successfull", data: updatedSlot });
+                if (findSlot) {
+                    const slotId = findSlot._id
+                    const newbookedSlot = findSlot.bookedSlot
+                    let availableSlot = findSlot.availableSlot
+
+                    //finding the slot from slot Id and increasing the bookedSlot to +1 and decrease the available slot to -1
+                    await service.slotModel.findOneAndUpdate({ _id: slotId }, { $set: { bookedSlot: newbookedSlot + 1, availableSlot: availableSlot - 1 } })
+                    return res.status(200).send({ status: true, message: "slot booking successfull", data: updatedSlot });
+                }
             }
             //if first dose is complected then booking for second dose and update the status
             if (getDoseType == "First" && getStatus == "complected") {
 
                 if (doseType == "First") return res.status(400).send({ status: false, message: "Your First dose is complected" });
 
-                let updatedSlot = await bookingModel.findOneAndUpdate({ _id: findbookingId, userId }, { $set: { status: "pending", doseType: "Second" } }, { new: true });
+                let updatedSlot = await service.bookingModel.findOneAndUpdate({ _id: findbookingId, userId }, { $set: { status: "pending", doseType: "Second" } }, { new: true });
 
-                const slotId = findSlot._id
-                const newbookedSlot = findSlot.bookedSlot
+                if (findSlot) {
+                    const slotId = findSlot._id
+                    const newbookedSlot = findSlot.bookedSlot
+                    let availableSlot = findSlot.availableSlot
 
-                await slotModel.findOneAndUpdate({ _id: slotId }, { $set: { bookedSlot: newbookedSlot + 1, availableSlot: availableSlot - 1 } })
-                return res.status(200).send({ status: true, message: "slot booking successfull", data: updatedSlot });
+                    await service.slotModel.findOneAndUpdate({ _id: slotId }, { $set: { bookedSlot: newbookedSlot + 1, availableSlot: availableSlot - 1 } })
+                    return res.status(200).send({ status: true, message: "slot booking successfull", data: updatedSlot });
+                }
             } else {
                 return res.status(400).send({ status: false, message: "You already booked a slot" })
             }
@@ -107,14 +116,17 @@ const bookSlot = async function (req: Request, res: Response) {
             slotDate: date,
             slotTime: time
         }
-        const slotId = findSlot._id
-        const newbookedSlot = findSlot.bookedSlot
 
-        await slotModel.findOneAndUpdate({ _id: slotId }, { $set: { bookedSlot: newbookedSlot + 1, availableSlot: availableSlot - 1 } })
+        if (findSlot) {
+            const slotId = findSlot._id
+            const newbookedSlot = findSlot.bookedSlot
+            let availableSlot = findSlot.availableSlot
 
-        let bookSlot = await bookingModel.create(saveData)
-        return res.status(201).send({ status: true, message: "slot booking successfull", data: bookSlot });
+            await service.slotModel.findOneAndUpdate({ _id: slotId }, { $set: { bookedSlot: newbookedSlot + 1, availableSlot: availableSlot - 1 } })
 
+            let bookSlot = await service.bookingModel.create(saveData)
+            return res.status(201).send({ status: true, message: "slot booking successfull", data: bookSlot });
+        }
 
     } catch (error: any) {
         return res.status(500).send({ status: false, message: error.message });
@@ -141,7 +153,7 @@ const updateBooking = async function (req: Request, res: Response) {
             return res.status(400).send({ status: false, message: "Invalid bookingId in body." });
         }
 
-        let findBooking = await bookingModel.findOne({ _id: bookingId, userId });
+        let findBooking = await service.bookingModel.findOne({ _id: bookingId, userId });
 
         if (!findBooking)
             return res.status(404).send({ status: false, message: "booking not found with this UserId and bookingId", });
@@ -154,7 +166,7 @@ const updateBooking = async function (req: Request, res: Response) {
 
 
         if (findBooking && findBooking.status == "pending") {
-            let updatedBooking = await bookingModel.findOneAndUpdate({ _id: bookingId, userId }, { $set: { status: status } }, { new: true });
+            let updatedBooking = await service.bookingModel.findOneAndUpdate({ _id: bookingId, userId }, { $set: { status: status } }, { new: true });
             return res.status(200).send({ status: true, message: "slot updated successfully ", data: updatedBooking });
         }
 

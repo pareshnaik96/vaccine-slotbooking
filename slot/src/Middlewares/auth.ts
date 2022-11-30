@@ -1,7 +1,8 @@
 import * as jwt from "jsonwebtoken";
 import { Types } from 'mongoose';
 import { Request, Response, NextFunction } from 'express'
-import userModel from "../../../user/src/Models/userModel";
+// import * as service from "../../../service";
+import userModel from "../Models/userModel";
 
 const isValidObjectId = function (ObjectId: any) {
     return Types.ObjectId.isValid(ObjectId)
@@ -33,11 +34,16 @@ const adminAuthorization = async function (req: Request, res: Response, next: Ne
     try {
 
         let AdminId = req.params.adminId
+        console.log(AdminId)
 
         if (!isValidObjectId(AdminId)) return res.status(400).send({ status: false, message: "invalid Id" })
 
+        // let user = await service.userModel.findById({ _id: AdminId })
         let user = await userModel.findById({ _id: AdminId })
+
+        // let admin = await service.userModel.findOne({ name: "Admin" })
         let admin = await userModel.findOne({ name: "Admin" })
+
 
         if (user && admin && user._id.equals(admin._id))
             next()

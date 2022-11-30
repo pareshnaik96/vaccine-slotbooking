@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import route from './Routes/route.js';
+import route from './Routes/route';
 
 
 const app = express();
@@ -15,6 +15,6 @@ mongoose.connect("mongodb+srv://pareshnaik:pareshruno@cluster0.pithhzr.mongodb.n
 
 app.use('/', route)
 
-app.listen(process.env.PORT || 3003, function () {
-    console.log('Express app running on port ' + (process.env.PORT || 3003))
+app.listen(process.env.PORT || 3002, function () {
+    console.log('Express app running on port ' + (process.env.PORT || 3002))
 });
