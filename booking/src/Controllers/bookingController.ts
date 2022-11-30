@@ -1,6 +1,6 @@
 import bookingModel from "../Models/bookingModel";
-import slotModel, { ISlot } from "../Models/slotModel";
-import userModel from "../Models/userModel";
+import slotModel, { ISlot } from "../../../slot/src/Models/slotModel";
+import userModel from "../../../user/src/Models/userModel";
 import mongoose from "mongoose";
 import { Request, Response } from 'express'
 
