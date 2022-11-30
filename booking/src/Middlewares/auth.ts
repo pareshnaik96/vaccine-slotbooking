@@ -14,7 +14,6 @@ const authentication = function (req: Request, res: Response, next: NextFunction
         let token = req.headers["x-api-key"] as string
         if (!token) token = req.headers["X-Api-Key"] as string
         if (!token) return res.status(400).send({ status: false, message: "You are not logged in. Token is required." })
-
         let decodeToken = jwt.verify(token, "vaccine@key")
         if (!decodeToken) {
             return res.status(401).send({ status: false, message: "You are not authenticate" })
@@ -25,6 +24,7 @@ const authentication = function (req: Request, res: Response, next: NextFunction
     } catch (error: any) {
         return res.status(500).send({ status: false, message: "Error", error: error.message })
     }
+
 }
 
 //AuthoriZation
