@@ -1,4 +1,4 @@
-import userModel from "../Models/userModel";
+import * as service from "service";
 import * as bcrypt from "bcrypt";
 import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express'
@@ -30,15 +30,24 @@ const createUser = async function (req: Request, res: Response) {
     try {
 
         let data = req.body
-
+        console.log(data)
         if (!isvalidRequestBody(data)) {
             return res.status(400).send({ status: false, message: "please enter required fields" });
         }
 
-        const { name, phoneNumber, age, pincode, aadharNo } = data;
+        let { role, name, phoneNumber, age, pincode, aadharNo } = data;
         let password = data.password
 
         //--------------------------------- validation ---------------------------------------------//
+
+
+        if (role === "") return res.status(400).send({ status: false, message: "role is not empty string" })
+
+        if (role) {
+            if (!['user', 'admin'].includes(role)) {
+                return res.status(400).send({ status: false, message: "role must be 'user' or 'admin'" });
+            }
+        }
 
         if (!isValid(name)) {
             return res.status(400).send({ status: false, message: "name is required" });
@@ -52,9 +61,15 @@ const createUser = async function (req: Request, res: Response) {
             return res.status(400).send({ status: false, message: "phoneNumber is required" });
         }
 
-        let uniquePhone = await userModel.findOne({ phoneNumber })
-        if (uniquePhone) {
-            return res.status(400).send({ status: false, message: "phoneNumber already exist" });
+        if (phoneNumber) {
+            console.log(phoneNumber)
+
+            let uniquePhone = await service.userModel.findOne({ phoneNumber })
+            console.log(uniquePhone)
+
+            if (uniquePhone) {
+                return res.status(400).send({ status: false, message: "phoneNumber already exist" });
+            }
         }
 
         if (!isValid1(phoneNumber)) {
@@ -99,6 +114,7 @@ const createUser = async function (req: Request, res: Response) {
 
 
         const saveData = {
+            role: role,
             name: name,
             phoneNumber: phoneNumber,
             age: age,
@@ -108,7 +124,7 @@ const createUser = async function (req: Request, res: Response) {
         }
 
 
-        let createUser = await userModel.create(saveData)
+        let createUser = await service.userModel.create(saveData)
         return res.status(201).send({ status: true, message: "User created successfully", data: createUser });
 
     } catch (error: any) {
@@ -139,7 +155,7 @@ const login = async function (req: Request, res: Response) {
             return res.status(400).send({ status: false, message: "please enter valid phone number" });
         }
 
-        const checkedUser = await userModel.findOne({ phoneNumber });
+        const checkedUser = await service.userModel.findOne({ phoneNumber });
         if (!checkedUser) {
             return res.status(404).send({ status: false, message: "No user with this number" });
         }

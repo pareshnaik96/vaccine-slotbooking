@@ -1,13 +1,11 @@
-import userModel from '../src/Models/userModel'
-import slotModel from '../src/Models/slotModel'
-import bookingModel from '../src/Models/bookingModel'
-import ISlot from '../src/Models/slotModel'
-
+import userModel, { IUser } from "./userModel";
+import slotModel, { ISlot } from "./slotModel";
+import bookingModel, { IBooking } from "./bookingModel"
 
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-// import route from './Routes/route';
+
 
 
 const app = express();
@@ -20,4 +18,4 @@ mongoose.connect("mongodb+srv://pareshnaik:pareshruno@cluster0.pithhzr.mongodb.n
 
 
 
-export { app, userModel, slotModel, bookingModel, ISlot }
+export { app, userModel, IUser, slotModel, ISlot, bookingModel, IBooking }
