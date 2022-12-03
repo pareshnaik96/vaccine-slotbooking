@@ -1,21 +1,11 @@
 import mongoose from "mongoose";
 
-export interface IUser {
-    role: string;
-    name: string;
-    phoneNumber: string;
-    age: number;
-    pincode: number;
-    aadharNo: string;
-    password: string;
-}
-
-const userSchema = new mongoose.Schema<IUser>(
+const userSchema = new mongoose.Schema(
     {
         role: {
             type: String,
             required: [true, "role is required"],
-            enum: ['user', 'admin'],
+            enum: ['user'],
             default: 'user',
             trim: true,
         },
@@ -57,4 +47,4 @@ const userSchema = new mongoose.Schema<IUser>(
 
 );
 
-export default mongoose.model<IUser>('User', userSchema);
+export default mongoose.model('User', userSchema);

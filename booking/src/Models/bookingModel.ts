@@ -1,16 +1,7 @@
 import mongoose, { Types } from "mongoose";
 
 
-export interface IBooking {
-    userId?: Types.ObjectId;
-    doseType: string;
-    slotDate: string;
-    slotTime: string;
-    status: string;
-    cancellable: boolean;
-}
-
-const bookingSchema = new mongoose.Schema<IBooking>(
+const bookingSchema = new mongoose.Schema(
     {
         userId: {
             type: Types.ObjectId,
@@ -50,4 +41,4 @@ const bookingSchema = new mongoose.Schema<IBooking>(
 
 
 
-export default mongoose.model<IBooking>('Booking', bookingSchema);
+export default mongoose.model('Booking', bookingSchema);

@@ -1,13 +1,7 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
-export interface ISlot {
-    _id?: Types.ObjectId;
-    date: string;
-    time: string;
-    bookedSlot: number;
-    availableSlot: number;
-}
-const slotSchema = new mongoose.Schema<ISlot>(
+
+const slotSchema = new mongoose.Schema(
     {
         date: {
             type: String,
@@ -35,4 +29,4 @@ const slotSchema = new mongoose.Schema<ISlot>(
 );
 
 
-export default mongoose.model<ISlot>('Slot', slotSchema);
+export default mongoose.model('Slot', slotSchema);

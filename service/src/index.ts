@@ -1,6 +1,6 @@
-import userModel, { IUser } from "./userModel";
-import slotModel, { ISlot } from "./slotModel";
-import bookingModel, { IBooking } from "./bookingModel"
+import { IUser } from "./models";
+import { ISlot } from "./models";
+import { IBooking } from "./models"
 
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -18,4 +18,4 @@ mongoose.connect("mongodb+srv://pareshnaik:pareshruno@cluster0.pithhzr.mongodb.n
 
 
 
-export { app, userModel, IUser, slotModel, ISlot, bookingModel, IBooking }
+export { app, IUser, ISlot, IBooking }
