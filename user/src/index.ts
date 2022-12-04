@@ -3,6 +3,9 @@
 // import mongoose from 'mongoose';
 import route from './Routes/route';
 import { app } from "service"
+// import * as dotenv from "dotenv";
+
+// dotenv.config();
 
 // const app = express();
 // app.use(bodyParser.json());

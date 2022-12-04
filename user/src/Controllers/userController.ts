@@ -31,13 +31,14 @@ const createUser = async function (req: Request, res: Response) {
     try {
 
         let data: IUser = req.body
+        // console.log(data)
 
         if (!isvalidRequestBody(data)) {
             return res.status(400).send({ status: false, message: "please enter required fields" });
         }
 
         let { role, name, phoneNumber, age, pincode, aadharNo } = data;
-        let password = data.password
+        let password: IUser = data.password
 
         //--------------------------------- validation ---------------------------------------------//
 
@@ -63,7 +64,9 @@ const createUser = async function (req: Request, res: Response) {
         }
 
         if (phoneNumber) {
+            console.log(phoneNumber)
             let uniquePhone = await userModel.findOne({ phoneNumber })
+            console.log(uniquePhone)
 
             if (uniquePhone) {
                 return res.status(400).send({ status: false, message: "phoneNumber already exist" });
@@ -138,8 +141,8 @@ const login = async function (req: Request, res: Response) {
 
     try {
 
-        let phoneNumber = req.body.phoneNumber;
-        let password = req.body.password;
+        let phoneNumber: IUser = req.body.phoneNumber;
+        let password: IUser = req.body.password;
 
         if (!phoneNumber) {
             return res.status(400).send({ status: false, message: "phone number is required" });

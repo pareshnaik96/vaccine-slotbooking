@@ -1,4 +1,4 @@
-import * as service from "service"
+import slotModel from "../Models/slotModel"
 import { Request, Response } from 'express'
 
 const isValid = function (value: string | number) {
@@ -41,7 +41,7 @@ const createSlot = async function (req: Request, res: Response) {
             time: newTime,
             // totalSlot: totalSlot
         }
-        let createSlot = await service.slotModel.create(saveData)
+        let createSlot = await slotModel.create(saveData)
         return res.status(201).send({ status: true, message: "Slot created successfully", data: createSlot });
 
     } catch (error: any) {
@@ -68,7 +68,7 @@ const getSlot = async function (req: Request, res: Response) {
             filter["time"] = time
         }
 
-        let avaliableSlot = await service.slotModel.find(filter).select({ _id: 0, date: 1, time: 1, totalSlot: 1, bookedSlot: 1, availableSlot: 1 })
+        let avaliableSlot = await slotModel.find(filter).select({ _id: 0, date: 1, time: 1, totalSlot: 1, bookedSlot: 1, availableSlot: 1 })
 
         if (avaliableSlot && avaliableSlot.length === 0)
             return res.status(404).send({ status: false, message: "No slot avaliable" })
