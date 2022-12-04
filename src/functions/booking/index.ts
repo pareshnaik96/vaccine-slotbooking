@@ -8,7 +8,7 @@ export default {
         {
             http: {
                 method: 'post',
-                path: 'booking',
+                path: 'booking/:userId',
                 request: {
                     schemas: {
                         'application/json': model,
@@ -19,7 +19,7 @@ export default {
         {
             http: {
                 method: 'put',
-                path: 'booking',
+                path: 'booking/:userId',
                 request: {
                     schemas: {
                         'application/json': model,

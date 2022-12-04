@@ -1,5 +1,5 @@
 import userModel from "../Models/userModel";
-// import * as bcrypt from "bcryptjs";
+import * as bcrypt from "bcryptjs";
 import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express'
 
@@ -147,13 +147,13 @@ const login = async function (req: Request, res: Response) {
         let phoneNumber = req.body.phoneNumber;
         let password = req.body.password;
 
-        if (!phoneNumber) {
-            return res.status(400).send({ status: false, message: "phone number is required" });
-        }
+        // if (!phoneNumber) {
+        //     return res.status(400).send({ status: false, message: "phone number is required" });
+        // }
 
-        if (!password) {
-            return res.status(400).send({ status: false, message: "password is required" });
-        }
+        // if (!password) {
+        //     return res.status(400).send({ status: false, message: "password is required" });
+        // }
 
         // if (!isValid1(phoneNumber)) {
         //     return res.status(400).send({ status: false, message: "please enter valid phone number" });
@@ -166,7 +166,7 @@ const login = async function (req: Request, res: Response) {
 
         let userId = checkedUser._id.toString()
 
-        // const match = await bcrypt.compare(password, checkedUser.password);
+        // const match = await bcrypt.compareSync(password, checkedUser.password);
         // if (!match) {
         //     return res.status(400).send({ status: false, message: "password wrong" });
         // }
