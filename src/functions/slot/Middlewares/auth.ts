@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken";
 import { Types } from 'mongoose';
 import { Request, Response, NextFunction } from 'express'
-import { IUser } from "service";
+// import { IUser } from "../../../libs/models";
 
 
 const isValidObjectId = function (ObjectId: any) {

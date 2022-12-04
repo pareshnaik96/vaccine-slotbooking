@@ -1,8 +1,8 @@
 import type { AWS } from '@serverless/typescript';
 
-import hello from '@functions/hello';
-import test from '@functions/test';
 import user from '@functions/user';
+import slot from '@functions/slot';
+import booking from '@functions/booking';
 
 const serverlessConfiguration: AWS = {
   service: 'vaccine-slotbooking',
@@ -23,7 +23,7 @@ const serverlessConfiguration: AWS = {
     },
   },
   // import the function via paths
-  functions: { hello, test, user },
+  functions: { user, slot, booking },
   package: { individually: true },
   custom: {
     esbuild: {

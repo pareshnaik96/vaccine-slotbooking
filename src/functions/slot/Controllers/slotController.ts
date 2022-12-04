@@ -17,17 +17,16 @@ const createSlot = async function (req: Request, res: Response) {
 
         let data = req.body
 
-        let { date, time, totalSlot } = data;
+        let { date, time } = data;
 
         if (!isValid(date)) {
             return res.status(400).send({ status: false, message: "slotDate is required" });
         }
+
         if (!isValid(time)) {
             return res.status(400).send({ status: false, message: "slotTime is required" });
         }
-        // if (!isValid(totalSlot)) {
-        //     return res.status(400).send({ status: false, message: "totalSlot is required" });
-        // }
+
 
         const string = date + " " + time
         const dt = new Date(string)  //converted into millisecond
@@ -39,7 +38,6 @@ const createSlot = async function (req: Request, res: Response) {
         const saveData = {
             date: newDate,
             time: newTime,
-            // totalSlot: totalSlot
         }
         let createSlot = await slotModel.create(saveData)
         return res.status(201).send({ status: true, message: "Slot created successfully", data: createSlot });

@@ -30,7 +30,7 @@ const createUser = async function (req: Request, res: Response) {
     try {
 
         let data = req.body
-        // console.log(data)
+
 
         // if (!isvalidRequestBody(data)) {
         //     return res.status(400).send({ status: false, message: "please enter required fields" });

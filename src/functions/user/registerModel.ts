@@ -9,5 +9,5 @@ export default {
     aadharNo: { type: 'string' },
     password: { type: 'string' }
   },
-  required: ['role', 'name', 'phoneNumber', 'age', 'pincode', 'aadharNo', 'password']
+  required: ['name', 'phoneNumber', 'age', 'pincode', 'aadharNo', 'password']
 } as const;

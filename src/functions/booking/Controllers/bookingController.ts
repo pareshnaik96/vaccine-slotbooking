@@ -1,10 +1,8 @@
 import bookingModel from "../Models/bookingModel"
 import mongoose from "mongoose";
 import { Request, Response } from 'express'
-import { IBooking } from "service"
-import { IUser } from "service"
-import { ISlot } from "service"
-
+// import {IUser} from '../../../libs/models'
+// import { ISlot } from '../../../libs/models'
 
 //===== validation for object id
 const isValidObjectId = function (ObjectId: any) {
@@ -105,13 +103,6 @@ const bookSlot = async function (req: Request, res: Response) {
             }
         }
 
-        // const dt = new Date(date)
-        // const newdt = dt.getTime()
-
-        // const newDate = new Date(newdt).toLocaleDateString()
-        // const newTime = new Date(newdt).toLocaleString().split(', ')[1]
-
-        //for new booking and update the slot
         const saveData = {
             userId: userId,
             doseType: doseType,
