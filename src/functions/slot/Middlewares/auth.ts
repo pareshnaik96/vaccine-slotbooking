@@ -1,6 +1,8 @@
 import * as jwt from "jsonwebtoken";
 import { Types } from 'mongoose';
 import { Request, Response, NextFunction } from 'express'
+import userModel from "@functions/common/userModel";
+
 // import { IUser } from "../../../libs/models";
 
 

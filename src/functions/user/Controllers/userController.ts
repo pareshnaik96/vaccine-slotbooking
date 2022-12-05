@@ -1,5 +1,5 @@
 import userModel from "../Models/userModel";
-import * as bcrypt from "bcryptjs";
+// import * as bcrypt from "bcryptjs";
 import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express'
 
@@ -30,6 +30,7 @@ const createUser = async function (req: Request, res: Response) {
     try {
 
         let data = req.body
+        console.log(data)
 
 
         // if (!isvalidRequestBody(data)) {
@@ -145,7 +146,7 @@ const login = async function (req: Request, res: Response) {
     try {
 
         let phoneNumber = req.body.phoneNumber;
-        let password = req.body.password;
+        // let password = req.body.password;
 
         // if (!phoneNumber) {
         //     return res.status(400).send({ status: false, message: "phone number is required" });

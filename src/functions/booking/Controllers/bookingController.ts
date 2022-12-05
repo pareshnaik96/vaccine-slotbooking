@@ -1,6 +1,8 @@
 import bookingModel from "../Models/bookingModel"
 import mongoose from "mongoose";
 import { Request, Response } from 'express'
+import userModel from "@functions/common/userModel";
+import slotModel from "@functions/common/slotModel";
 // import {IUser} from '../../../libs/models'
 // import { ISlot } from '../../../libs/models'
 
@@ -84,7 +86,7 @@ const bookSlot = async function (req: Request, res: Response) {
                 }
             }
             //if first dose is complected then booking for second dose and update the status
-            if (getDoseType == "First" && getStatus == "complected") {
+            if (getDoseType == "First" && getStatus == "completed") {
 
                 if (doseType == "First") return res.status(400).send({ status: false, message: "Your First dose is complected" });
 
@@ -154,7 +156,7 @@ const updateBooking = async function (req: Request, res: Response) {
         if (findBooking && findBooking.status == "cancelled")
             return res.status(400).send({ status: false, message: "cant modify status. as it is already cancelled", })
 
-        if (findBooking && findBooking.status == "complected")
+        if (findBooking && findBooking.status == "completed")
             return res.status(400).send({ status: false, message: "cant modify status. as it is already complected", })
 
 
