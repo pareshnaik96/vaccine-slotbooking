@@ -4,40 +4,40 @@ const userSchema = new mongoose.Schema(
     {
         role: {
             type: String,
-            // required: [true, "role is required"],
+            required: [true, "role is required"],
             enum: ['user'],
             default: 'user',
             trim: true,
         },
         name: {
             type: String,
-            // required: [true, "name is required"],
+            required: [true, "name is required"],
             trim: true
         },
         phoneNumber: {
             type: String,
-            // required: [true, "phone number is required"],
+            required: [true, "phone number is required"],
             unique: true,
             trim: true
         },
         age: {
             type: Number,
-            // required: [true, "age is required"],
+            required: [true, "age is required"],
             trim: true
         },
         pincode: {
             type: Number,
-            // required: [true, "pincode is required"],
+            required: [true, "pincode is required"],
             trim: true
         },
         aadharNo: {
             type: String,
-            // required: [true, "aadhar No. is required"],
+            required: [true, "aadhar No. is required"],
             trim: true
         },
         password: {
             type: String,
-            // required: [true, "password is required"],
+            required: [true, "password is required"],
             minLen: 8,
             maxLen: 15,
             trim: true

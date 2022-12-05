@@ -16,8 +16,9 @@ const createSlot = async function (req: Request, res: Response) {
     try {
 
         let data = req.body
+        const slotData = JSON.parse(data)
 
-        let { date, time } = data;
+        let { date, time } = slotData;
 
         if (!isValid(date)) {
             return res.status(400).send({ status: false, message: "slotDate is required" });
@@ -55,6 +56,7 @@ const getSlot = async function (req: Request, res: Response) {
     try {
 
         let data = req.query
+
         let { date, time } = data
 
         let filter = { availableSlot: { $gt: 0 } }

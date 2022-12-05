@@ -8,10 +8,10 @@ const isValidObjectId = function (ObjectId: any) {
 
 
 // Authentication
-const authentication = function (req: Request, res: Response, next: NextFunction) {
+const authentication = function (req: any, res: Response, next: NextFunction) {
 
     try {
-        let token = req.headers["x-api-key"] as string
+        let token = req.apiGateway.event.headers["x-api-key"] as string
         if (!token) token = req.headers["X-Api-Key"] as string
         if (!token) return res.status(400).send({ status: false, message: "You are not logged in. Token is required." })
         let decodeToken = jwt.verify(token, "vaccine@key")

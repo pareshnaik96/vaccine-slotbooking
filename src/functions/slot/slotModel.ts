@@ -6,5 +6,5 @@ export default {
         bookedSlot: { type: 'number' },
         availableSlot: { type: 'number' }
     },
-    required: ['date', 'time', 'bookedSlot', 'availableSlot']
+    required: ['date', 'time']
 } as const;

@@ -1,6 +1,7 @@
 export default {
     type: "object",
     properties: {
+        bookingId: { type: 'string' },
         userId: { type: 'string' },
         doseType: { type: 'string' },
         slotDate: { type: 'string' },
@@ -8,5 +9,5 @@ export default {
         status: { type: 'string' },
         cancellable: { type: 'boolean' }
     },
-    required: ['doseType', 'slotDate', 'slotTime']
+    required: ['status']
 } as const;

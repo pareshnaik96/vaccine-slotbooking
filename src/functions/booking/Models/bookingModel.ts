@@ -1,10 +1,10 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
 
 const bookingSchema = new mongoose.Schema(
     {
         userId: {
-            type: Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             required: [true, "userId is required"],
             refs: 'User',
             trim: true

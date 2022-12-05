@@ -8,7 +8,7 @@ export default {
         {
             http: {
                 method: 'post',
-                path: 'slot/:adminId',
+                path: 'slot/{adminId}',
                 request: {
                     schemas: {
                         'application/json': model,

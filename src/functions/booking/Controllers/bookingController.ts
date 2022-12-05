@@ -1,8 +1,8 @@
 import bookingModel from "../Models/bookingModel"
 import mongoose from "mongoose";
 import { Request, Response } from 'express'
-import userModel from "@functions/common/userModel";
-import slotModel from "@functions/common/slotModel";
+import userModel from "@libs/common/userModel";
+import slotModel from "@libs/common/slotModel";
 // import {IUser} from '../../../libs/models'
 // import { ISlot } from '../../../libs/models'
 
@@ -21,7 +21,7 @@ const isValid = function (value: string) {
 //====================================================== slot booking controller =================================================//
 
 
-const bookSlot = async function (req: Request, res: Response) {
+const bookSlot = async function (req: any, res: Response) {
 
     try {
 
@@ -34,8 +34,9 @@ const bookSlot = async function (req: Request, res: Response) {
         //doseType, slotDate, slotTime is required in request body only in first booking
 
         let data = req.body
-        // console.log(data)
-        const { doseType, date, time } = data
+        const slotData = JSON.parse(data)
+
+        const { doseType, slotDate, slotTime } = slotData
 
         if (!isValid(doseType)) {
             return res.status(400).send({ status: false, message: "doseType is required" });
@@ -48,7 +49,7 @@ const bookSlot = async function (req: Request, res: Response) {
         }
 
         //for finding availability of slot from slotmodel
-        let findSlot = await slotModel.findOne({ date: date, time: time })
+        let findSlot = await slotModel.findOne({ date: slotDate, time: slotTime })
         if (findSlot) {
             let availableSlot = findSlot.availableSlot
             if (availableSlot === 0) {
@@ -108,8 +109,8 @@ const bookSlot = async function (req: Request, res: Response) {
         const saveData = {
             userId: userId,
             doseType: doseType,
-            slotDate: date,
-            slotTime: time
+            slotDate: slotDate,
+            slotTime: slotTime
         }
 
         if (findSlot) {
@@ -139,7 +140,8 @@ const updateBooking = async function (req: Request, res: Response) {
         let userId = req.params.userId;
 
         let data = req.body
-        const { bookingId, status } = data;
+        const bookingData = JSON.parse(data)
+        const { bookingId, status } = bookingData;
 
         if (!bookingId)
             return res.status(400).send({ status: false, message: "bookingId is required" });

@@ -1,4 +1,5 @@
 import model from './bookingModel';
+import update from './updatebookingModel ';
 
 import { handlerPath } from '@libs/handler-resolver';
 
@@ -8,7 +9,7 @@ export default {
         {
             http: {
                 method: 'post',
-                path: 'booking/:userId',
+                path: 'booking/{userId}',
                 request: {
                     schemas: {
                         'application/json': model,
@@ -19,10 +20,10 @@ export default {
         {
             http: {
                 method: 'put',
-                path: 'booking/:userId',
+                path: 'booking/{userId}',
                 request: {
                     schemas: {
-                        'application/json': model,
+                        'application/json': update,
                     },
                 },
             },
