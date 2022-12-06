@@ -1,6 +1,6 @@
 import express from "express";
 import serverless from 'serverless-http';
-import { createSlot, getSlot } from "./Controllers/slotController";
+import { createSlot, getSlot, getUser, getUserStatus } from "./Controllers/slotController";
 import { authentication, adminAuthorization } from './Middlewares/auth'
 import mongoose from 'mongoose';
 import bodyParser from "body-parser";
@@ -18,6 +18,10 @@ mongoose.connect("mongodb+srv://pareshnaik:pareshruno@cluster0.pithhzr.mongodb.n
 app.post('/slot/:adminId', adminAuthorization, createSlot)       //only admin can create slot
 
 app.get('/slot', authentication, getSlot)
+
+app.get('/user/:adminId', adminAuthorization, getUser)           //only user can access the data
+
+app.get('/user/admin/:adminId', adminAuthorization, getUserStatus)           //only user can access the data
 
 
 export const main = serverless(app);

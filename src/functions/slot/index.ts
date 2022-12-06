@@ -1,4 +1,6 @@
-import model from './slotModel';
+import slot from './slotModel';
+import user from './userModel'
+import booking from './bookingModel'
 
 import { handlerPath } from '@libs/handler-resolver';
 
@@ -11,7 +13,7 @@ export default {
                 path: 'slot/{adminId}',
                 request: {
                     schemas: {
-                        'application/json': model,
+                        'application/json': slot,
                     },
                 },
             },
@@ -22,7 +24,29 @@ export default {
                 path: 'slot',
                 request: {
                     schemas: {
-                        'application/json': model,
+                        'application/json': slot,
+                    },
+                },
+            },
+        },
+        {
+            http: {
+                method: 'get',
+                path: 'user/{adminId}',
+                request: {
+                    schemas: {
+                        'application/json': user,
+                    },
+                },
+            },
+        },
+        {
+            http: {
+                method: 'get',
+                path: 'user/admin/{adminId}',
+                request: {
+                    schemas: {
+                        'application/json': booking,
                     },
                 },
             },
